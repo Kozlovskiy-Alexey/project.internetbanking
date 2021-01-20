@@ -1,42 +1,33 @@
 package by.aleksey.project.ibankingapp.Test;
 
-import by.aleksey.project.ibankingapp.io.ConsoleIO;
-import by.aleksey.project.ibankingapp.io.IOInterface;
-import by.aleksey.project.ibankingapp.model.CreditCard;
-import by.aleksey.project.ibankingapp.repository.CreditCardRepository;
-import by.aleksey.project.ibankingapp.repository.CreditCardRepositoryImpl;
 
+import by.aleksey.project.ibankingapp.service.ConnectionImp;
+import by.aleksey.project.ibankingapp.service.PaymentReceiptServiceImpl;
 
-import java.io.IOException;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
 public class Test {
-
-
+    private final static String SET_PAYMENT_RECEIPT_TRANSACTION_QUERY = "insert into paymentreciept value (null, 'перевод на карту',?, ?, ?, ?, ?, ?)";
+    private final static String SET_PAYMENT_RECEIPT_DEPOSIT_QUERY = "insert into paymentreciept value (null, 'открытие депозита', ?, ?, ?, ?, ?, ?)";
 
     public static void main(String[] args) {
 
-        CreditCardRepository creditCardRepository = new CreditCardRepositoryImpl();
-
+   /*     String timeOfTransaction = PaymentReceiptServiceImpl.getDateAndTime();
         try {
-            IOInterface ioInterface = new ConsoleIO();
-            System.out.println("Выберите карту отправитель");
-            int idCardSender = Integer.parseInt(ioInterface.readLine());
-            System.out.println("Выберите карту получатель");
-            int idCardReceiver = Integer.parseInt(ioInterface.readLine());
-
-            CreditCard creditCardSender = creditCardRepository.getCreditCardById(idCardSender);
-            CreditCard creditCardReceiver = creditCardRepository.getCreditCardById(idCardSender);
-
-
-            // транзакция, если валюта отправителя BYN и валюта получателя BYN
-            System.out.println(creditCardSender.getCurrency().equals("BYN"));
-            System.out.println(creditCardReceiver.getCurrency().equals("BYN"));
-
-        } catch (SQLException | IOException e) {
+            Connection connection = ConnectionImp.getConnection();
+            PreparedStatement statement = connection.prepareStatement(SET_PAYMENT_RECEIPT_TRANSACTION_QUERY);
+            statement.setString(1, "12/05");
+            statement.setString(2, "accountName");
+            statement.setString(3, "creditCard.getCurrency()");
+            statement.setDouble(4, 100.00);
+            statement.setLong(5, 1313213213);
+            statement.setInt(6, 5);
+            statement.executeUpdate();
+        } catch (SQLException e) {
             e.printStackTrace();
-        }
-
+        }*/
 
     }
 }

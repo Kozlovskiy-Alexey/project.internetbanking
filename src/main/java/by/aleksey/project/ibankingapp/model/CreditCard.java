@@ -13,9 +13,9 @@ public class CreditCard {
     private String ownerCard;
     private double balanceCard;
     private String currency;
-    private String customerId;
+    private int customerId;
 
-    public CreditCard(int id, int pinCode, String kindCard, long cardNumber, Date validThrough, String statusCard, String ownerCard, double balanceCard, String currency, String customerId) {
+    public CreditCard(int id, int pinCode, String kindCard, long cardNumber, Date validThrough, String statusCard, String ownerCard, double balanceCard, String currency, int customerId) {
         this.id = id;
         this.pinCode = pinCode;
         this.kindCard = kindCard;
@@ -28,11 +28,13 @@ public class CreditCard {
         this.customerId = customerId;
     }
 
-    public CreditCard(int id, long cardNumber, String currency, double balanceCard) {
+    public CreditCard(int id, long cardNumber, String currency, double balanceCard, String ownerCard, int customerId) {
         this.id = id;
         this.balanceCard = balanceCard;
         this.currency = currency;
         this.cardNumber = cardNumber;
+        this.ownerCard = ownerCard;
+        this.customerId = customerId;
     }
 
     public int getId() {
@@ -107,11 +109,11 @@ public class CreditCard {
         this.currency = currency;
     }
 
-    public String getCustomerId() {
+    public int getCustomerId() {
         return customerId;
     }
 
-    public void setCustomerId(String customerId) {
+    public void setCustomerId(int customerId) {
         this.customerId = customerId;
     }
 

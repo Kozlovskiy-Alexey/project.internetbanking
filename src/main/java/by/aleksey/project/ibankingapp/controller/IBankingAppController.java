@@ -2,13 +2,8 @@ package by.aleksey.project.ibankingapp.controller;
 
 import by.aleksey.project.ibankingapp.io.ConsoleIO;
 import by.aleksey.project.ibankingapp.io.IOInterface;
-import by.aleksey.project.ibankingapp.model.Account;
-import by.aleksey.project.ibankingapp.model.CreditCard;
-import by.aleksey.project.ibankingapp.model.Currency;
-import by.aleksey.project.ibankingapp.repository.CreditCardRepository;
-import by.aleksey.project.ibankingapp.repository.CreditCardRepositoryImpl;
-import by.aleksey.project.ibankingapp.repository.CurrencyRepository;
-import by.aleksey.project.ibankingapp.repository.CurrencyRepositoryImpl;
+import by.aleksey.project.ibankingapp.model.*;
+import by.aleksey.project.ibankingapp.repository.*;
 import by.aleksey.project.ibankingapp.service.*;
 
 import java.io.IOException;
@@ -23,6 +18,10 @@ public class IBankingAppController {
     private final CreditCardService creditCardService;
     private final CurrencyRepository currencyRepository;
     private final CurrencyServiceImpl currencyService;
+    private final DepositRepository depositRepository;
+    private final DepositService depositService;
+    private final PaymentReceiptRepository paymentReceiptRepository;
+    private final PaymentReceiptService paymentReceiptService;
 
     public IBankingAppController() {
         this.ioInterface = new ConsoleIO();
@@ -31,7 +30,10 @@ public class IBankingAppController {
         this.creditCardService = new CreditCardServiceImpl();
         this.currencyRepository = new CurrencyRepositoryImpl();
         this.currencyService = new CurrencyServiceImpl();
-
+        this.depositRepository = new DepositRepositoryImpl();
+        this.depositService = new DepositServiceImpl();
+        this.paymentReceiptRepository = new PaymentReceiptRepositoryImpl();
+        this.paymentReceiptService = new PaymentReceiptServiceImpl();
     }
 
     public void start() {
@@ -67,6 +69,7 @@ public class IBankingAppController {
         String input2 = "";
         String input3 = "";
         ArrayList<CreditCard> list = new ArrayList<>();
+        ArrayList<PaymentReceipt> paymentReceipts = new ArrayList<>();
         do {
             System.out.println(IOInterface.MENU);
             try {
@@ -114,10 +117,34 @@ public class IBankingAppController {
                     } while (!input1.equals("3"));
                     break;
                 case "3":
-                    System.out.println("чеки оплат");
+                    try {
+                        paymentReceipts = paymentReceiptRepository.getByPaymentReceipt(account);
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                    paymentReceiptService.showHistoryOfTransaction(paymentReceipts);
+
                     break;
                 case "4":
-                    System.out.println("электронные депозиты");
+                    do {
+                        System.out.println(IOInterface.MENU_DEPOSIT);
+                        try {
+
+                            input2 = ioInterface.readLine();
+                            switch (input2) {
+                                case "1":
+                                    ArrayList<Deposit> deposits = null;
+                                    deposits = depositRepository.getByDeposit(account);
+                                    depositService.showDeposits(deposits);
+                                    break;
+                                case "2":
+                                    depositService.openNewDeposit(account);
+                                    break;
+                            }
+                        } catch (SQLException | IOException e) {
+                            e.getStackTrace();
+                        }
+                    } while (!input2.equals("3"));
                     break;
                 case "5":
                     System.out.println("курсы валют");

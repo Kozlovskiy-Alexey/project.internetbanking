@@ -9,5 +9,6 @@ public class CurrencyServiceImpl {
         System.out.println("-----------------------------------------");
         System.out.printf("%-12s%-8s%-10s%-10s%n", currency1.getAmount(), currency1.getCurrency(), currency1.getPurchase(), currency1.getSelling());
         System.out.printf("%-12s%-8s%-10s%-10s%n", currency2.getAmount(), currency2.getCurrency(), currency2.getPurchase(), currency2.getSelling());
+        System.out.println();
     }
 }

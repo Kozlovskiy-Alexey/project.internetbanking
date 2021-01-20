@@ -18,6 +18,7 @@ public class CreditCardServiceImpl implements CreditCardService {
     private IOInterface ioInterface = new ConsoleIO();
     private CurrencyRepository currencyRate = new CurrencyRepositoryImpl();
     private CreditCardRepository creditCardRepository = new CreditCardRepositoryImpl();
+    private PaymentReceiptService paymentReceiptService = new PaymentReceiptServiceImpl();
 
     // показать информацию по всем картам пользователя
     @Override
@@ -54,6 +55,8 @@ public class CreditCardServiceImpl implements CreditCardService {
                 creditCardReceiver.setBalanceCard(creditCardReceiver.getBalanceCard() + amount);
                 creditCardRepository.updateBalanceCard(idCardSender, creditCardSender.getBalanceCard());
                 creditCardRepository.updateBalanceCard(idCardReceiver, creditCardReceiver.getBalanceCard());
+                paymentReceiptService.setTransactionTransferMoneyToOwnCard(creditCardSender,amount);
+                paymentReceiptService.setTransactionTransferMoneyToAnotherCard(creditCardReceiver,amount);
 
                 // транзакция, если валюта отправителя USD и валюта получателя USD
             } else if (creditCardSender.getCurrency().equals("USD") && creditCardReceiver.getCurrency().equals("USD")) {
@@ -63,6 +66,8 @@ public class CreditCardServiceImpl implements CreditCardService {
                 creditCardReceiver.setBalanceCard(creditCardReceiver.getBalanceCard() + amount);
                 creditCardRepository.updateBalanceCard(idCardSender, creditCardSender.getBalanceCard());
                 creditCardRepository.updateBalanceCard(idCardReceiver, creditCardReceiver.getBalanceCard());
+                paymentReceiptService.setTransactionTransferMoneyToOwnCard(creditCardSender,amount);
+                paymentReceiptService.setTransactionTransferMoneyToAnotherCard(creditCardReceiver,amount);
 
                 // транзакция, если валюта отправителя BYN и валюта получателя USD
             } else if (creditCardSender.getCurrency().equals("BYN") && creditCardReceiver.getCurrency().equals("USD")) {
@@ -72,6 +77,8 @@ public class CreditCardServiceImpl implements CreditCardService {
                 creditCardReceiver.setBalanceCard(creditCardReceiver.getBalanceCard() + amount);
                 creditCardRepository.updateBalanceCard(idCardSender, creditCardSender.getBalanceCard());
                 creditCardRepository.updateBalanceCard(idCardReceiver, creditCardReceiver.getBalanceCard());
+                paymentReceiptService.setTransactionTransferMoneyToOwnCard(creditCardSender,amount);
+                paymentReceiptService.setTransactionTransferMoneyToAnotherCard(creditCardReceiver,amount);
 
                 // транзакция, если валюта отправителя USD и валюта получателя BYN
             } else if (creditCardSender.getCurrency().equals("USD") && creditCardReceiver.getCurrency().equals("BYN")) {
@@ -81,6 +88,8 @@ public class CreditCardServiceImpl implements CreditCardService {
                 creditCardReceiver.setBalanceCard(creditCardReceiver.getBalanceCard() + amount);
                 creditCardRepository.updateBalanceCard(idCardSender, creditCardSender.getBalanceCard());
                 creditCardRepository.updateBalanceCard(idCardReceiver, creditCardReceiver.getBalanceCard());
+                paymentReceiptService.setTransactionTransferMoneyToOwnCard(creditCardSender,amount);
+                paymentReceiptService.setTransactionTransferMoneyToAnotherCard(creditCardReceiver,amount);
             }
         } catch (SQLException | IOException | NumberFormatException e) {
             e.printStackTrace();
@@ -110,6 +119,8 @@ public class CreditCardServiceImpl implements CreditCardService {
                 creditCardReceiver.setBalanceCard(creditCardReceiver.getBalanceCard() + amount);
                 creditCardRepository.updateBalanceCard(creditCardSender.getId(), creditCardSender.getBalanceCard());
                 creditCardRepository.updateBalanceCard(creditCardReceiver.getId(), creditCardReceiver.getBalanceCard());
+                paymentReceiptService.setTransactionTransferMoneyToOwnCard(creditCardSender,amount);
+                paymentReceiptService.setTransactionTransferMoneyToAnotherCard(creditCardReceiver,amount);
 
                 // транзакция, если валюта отправителя USD и валюта получателя USD
             } else if (creditCardSender.getCurrency().equals("USD") && creditCardReceiver.getCurrency().equals("USD")) {
@@ -119,6 +130,8 @@ public class CreditCardServiceImpl implements CreditCardService {
                 creditCardReceiver.setBalanceCard(creditCardReceiver.getBalanceCard() + amount);
                 creditCardRepository.updateBalanceCard(creditCardSender.getId(), creditCardSender.getBalanceCard());
                 creditCardRepository.updateBalanceCard(creditCardReceiver.getId(), creditCardReceiver.getBalanceCard());
+                paymentReceiptService.setTransactionTransferMoneyToOwnCard(creditCardSender,amount);
+                paymentReceiptService.setTransactionTransferMoneyToAnotherCard(creditCardReceiver,amount);
 
                 // транзакция, если валюта отправителя BYN и валюта получателя USD
             } else if (creditCardSender.getCurrency().equals("BYN") && creditCardReceiver.getCurrency().equals("USD")) {
@@ -128,6 +141,8 @@ public class CreditCardServiceImpl implements CreditCardService {
                 creditCardReceiver.setBalanceCard(creditCardReceiver.getBalanceCard() + amount);
                 creditCardRepository.updateBalanceCard(creditCardSender.getId(), creditCardSender.getBalanceCard());
                 creditCardRepository.updateBalanceCard(creditCardReceiver.getId(), creditCardReceiver.getBalanceCard());
+                paymentReceiptService.setTransactionTransferMoneyToOwnCard(creditCardSender,amount);
+                paymentReceiptService.setTransactionTransferMoneyToAnotherCard(creditCardReceiver,amount);
 
                 // транзакция, если валюта отправителя USD и валюта получателя BYN
             } else if (creditCardSender.getCurrency().equals("USD") && creditCardReceiver.getCurrency().equals("BYN")) {
@@ -137,6 +152,8 @@ public class CreditCardServiceImpl implements CreditCardService {
                 creditCardReceiver.setBalanceCard(creditCardReceiver.getBalanceCard() + amount);
                 creditCardRepository.updateBalanceCard(creditCardSender.getId(), creditCardSender.getBalanceCard());
                 creditCardRepository.updateBalanceCard(creditCardReceiver.getId(), creditCardReceiver.getBalanceCard());
+                paymentReceiptService.setTransactionTransferMoneyToOwnCard(creditCardSender,amount);
+                paymentReceiptService.setTransactionTransferMoneyToAnotherCard(creditCardReceiver,amount);
             }
         } catch (SQLException | IOException e) {
             e.getStackTrace();
@@ -144,45 +161,4 @@ public class CreditCardServiceImpl implements CreditCardService {
     }
 }
 
-
-// пробовал реализовывать метод TransferMoney через массив карт ArrayList<CreditCard>, полученный по Id пользователя, не получилось
-// проверяем какую валюту вводить для перевода, если currency получателя в рублях, то
-
-            /*for (CreditCard card : list) {
-                if (card.getCurrency().equalsIgnoreCase("BYN") && card.getId() == idCardReceiver) {
-                    System.out.println("Ведите сумму перевода, рублей");
-                    amount = Double.parseDouble((ioInterface.readLine()));
-                    double setBalance1 = card.getBalanceCard() + amount;
-                    card.setBalanceCard(setBalance1);
-                    creditCardRepository.updateBalanceCard(idCardReceiver, (int) setBalance1);
-
-                    if (card.getCurrency().equalsIgnoreCase("BYN") && card.getId() == idCardSender) {
-                        double setBalance2 = card.getBalanceCard() - amount;
-                        creditCardRepository.updateBalanceCard(idCardSender, (int) setBalance2);
-                    } else {
-                        double setBalance3 = card.getBalanceCard() - amount / 2.58;
-                        card.setBalanceCard(setBalance3);
-                        creditCardRepository.updateBalanceCard(idCardSender, (int) setBalance3);
-                    }
-                } else if (card.getCurrency().equalsIgnoreCase("USD") && card.getId() == idCardReceiver) {
-                    System.out.println("Ведите сумму перевода, USD");
-                    amount = Double.parseDouble((ioInterface.readLine()));
-                    double setBalance4 = (card.getBalanceCard() + amount);
-                    card.setBalanceCard(setBalance4);
-                    creditCardRepository.updateBalanceCard(idCardReceiver, (int) setBalance4);
-
-                    if (card.getId() == idCardSender && card.getCurrency().equalsIgnoreCase("BYN")) {
-                        double setBalance5 = card.getBalanceCard() - amount * 2.68;
-                        card.setBalanceCard(setBalance5);
-                        creditCardRepository.updateBalanceCard(idCardSender, (int) setBalance5);
-                    } else {
-                        double setBalance6 = card.getBalanceCard() - amount;
-                        card.setBalanceCard(setBalance6);
-                        creditCardRepository.updateBalanceCard(idCardSender, (int) setBalance6);
-                    }
-                }
-            }
-        } catch (IOException | SQLException e) {
-            e.printStackTrace();
-        }*/
 

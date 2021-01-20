@@ -28,7 +28,9 @@ public class CreditCardRepositoryImpl implements CreditCardRepository {
         double balanceCard = resultSet.getDouble("balancecard");
         String currency = resultSet.getString("currency");
         long curdNumber = resultSet.getLong("cardnumber");
-        return new CreditCard(id, curdNumber, currency, balanceCard);
+        String ownerCard = resultSet.getString("ownercard");
+        int customerId = resultSet.getInt("customerid");
+        return new CreditCard(id, curdNumber, currency, balanceCard, ownerCard, customerId);
     }
 
     @Override
@@ -43,7 +45,9 @@ public class CreditCardRepositoryImpl implements CreditCardRepository {
         double balanceCard = resultSet.getDouble("balancecard");
         String currency = resultSet.getString("currency");
         long curdNumber = resultSet.getLong("cardnumber");
-        return new CreditCard(id, curdNumber, currency, balanceCard);
+        String ownerCard = resultSet.getString("ownercard");
+        int customerId = resultSet.getInt("customerid");
+        return new CreditCard(id, curdNumber, currency, balanceCard, ownerCard, customerId);
     }
 
     @Override
@@ -76,7 +80,7 @@ public class CreditCardRepositoryImpl implements CreditCardRepository {
                 String ownerCard = resultSet.getString("ownercard");
                 double balanceCard = resultSet.getDouble("balancecard");
                 String currency = resultSet.getString("currency");
-                String customerId = resultSet.getString("customerid");
+                int customerId = resultSet.getInt("customerid");
                 list.add(new CreditCard(id, pinCode, kindCard, cardNumber, validThrough, statusCard, ownerCard, balanceCard, currency, customerId));
             }
         } catch (SQLException e) {
